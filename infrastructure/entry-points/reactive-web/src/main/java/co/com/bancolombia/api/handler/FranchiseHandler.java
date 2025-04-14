@@ -1,7 +1,9 @@
 package co.com.bancolombia.api.handler;
 
 import co.com.bancolombia.api.mapper.IFranchiseMapperDto;
+import co.com.bancolombia.api.model.request.BranchRequest;
 import co.com.bancolombia.api.model.request.FranchiseRequest;
+import co.com.bancolombia.api.model.request.ProductRequest;
 import co.com.bancolombia.api.model.response.FranchiseResponse;
 import co.com.bancolombia.usecase.franchise.port.FranchiseServicePort;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
 
 @Component
 @RequiredArgsConstructor
@@ -48,5 +51,27 @@ private final IFranchiseMapperDto mapperDto;
                 .flatMap(servicePort::createFranchise)
                 .map(mapperDto::toResponse)
                 .flatMap(dto -> ServerResponse.ok().bodyValue(dto));
+    }
+
+    public Mono<ServerResponse> addBranchToFranchise(ServerRequest request) {
+        return request.bodyToMono(BranchRequest.class)
+                .map(mapperDto::toDomain)
+                .flatMap(newBranch -> servicePort.addBranchToFranchise(request.pathVariable("franchiseId") , newBranch))
+                .map(mapperDto::toResponse)
+                .flatMap(response -> ServerResponse.ok().bodyValue(response));
+
+    }
+
+    public Mono<ServerResponse> addProductToBranch(ServerRequest request) {
+        return request.bodyToMono(ProductRequest.class)
+                .map(mapperDto::toDomain)
+                .flatMap(product -> servicePort.addProductToBranch(
+                        request.pathVariable("franchiseId"),
+                        request.pathVariable("branchName"),
+                        product
+                ))
+                .map(mapperDto::toResponse)
+                .flatMap(response -> ServerResponse.ok().bodyValue(response));
+
     }
 }

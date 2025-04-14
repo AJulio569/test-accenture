@@ -13,8 +13,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -85,4 +87,15 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         return response.writeWith(Mono.just(response.bufferFactory().wrap(json.getBytes(StandardCharsets.UTF_8))));
 
     }
+
+    /*
+    @ExceptionHandler(BusinessException.class)
+    public Mono<ResponseEntity<String>> handleBusinessException(BusinessException ex) {
+        return Mono.just(ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage()));
+    }
+
+     */
+
     }

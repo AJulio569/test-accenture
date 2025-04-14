@@ -41,4 +41,9 @@ public class FranchiseRepositoryAdapter implements FranchiseRepositoryPort {
         return repository.findAll()
                 .map(mapper::toDomain);
     }
+
+    @Override
+    public Mono<Void> deleteById(String id) {
+        return repository.deleteById(id);
+    }
 }

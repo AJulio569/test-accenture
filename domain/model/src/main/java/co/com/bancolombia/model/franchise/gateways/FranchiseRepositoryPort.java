@@ -9,5 +9,6 @@ public interface FranchiseRepositoryPort {
     Mono<Franchise> findById(String id);
     Mono<Franchise> findByName(String name);
     Flux<Franchise> findAll();
+    Mono<Void> deleteById(String id);
 
 }

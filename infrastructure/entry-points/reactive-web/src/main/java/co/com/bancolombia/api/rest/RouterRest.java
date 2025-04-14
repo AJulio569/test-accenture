@@ -17,6 +17,8 @@ public class RouterRest {
         return route(GET("/api/franchise"), franchiseHandler::getAllFranchise)
                 .andRoute(POST("/api/franchise"), franchiseHandler::createFranchise)
                 .and(route(GET("/api/franchise/name/{name}"), franchiseHandler::getFranchiseByName))
-                .and(route(GET("/api/franchise/id/{id}"), franchiseHandler::getFranchiseById));
+                .and(route(GET("/api/franchise/id/{id}"), franchiseHandler::getFranchiseById))
+                .and(route(POST("/api/franchise/{franchiseId}/branches"), franchiseHandler::addBranchToFranchise))
+                .and(route(POST("/api/franchise/{franchiseId}/branches/products"), franchiseHandler::addProductToBranch));
     }
 }
